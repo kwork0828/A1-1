@@ -101,6 +101,9 @@ def add_prompt():
 
 def show_list():
     print("\n=== 프롬프트 목록 ===")
+    if not prompts:
+        print("등록된 프롬프트가 없습니다.")
+        return
     for i, prompt in enumerate(prompts, 1):
         print_prompt_line(i, prompt)
     print(f"\n총 {len(prompts)}개의 프롬프트")
