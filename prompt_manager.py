@@ -99,6 +99,12 @@ def add_prompt():
     })
     print("\n프롬프트가 추가되었습니다!")
 
+def show_list():
+    print("\n=== 프롬프트 목록 ===")
+    for i, prompt in enumerate(prompts, 1):
+        print_prompt_line(i, prompt)
+    print(f"\n총 {len(prompts)}개의 프롬프트")
+
 
 def main():
     while True:
@@ -107,6 +113,8 @@ def main():
 
         if choice == "1":
             add_prompt()
+        elif choice == "2":
+            show_list()
         elif choice == "0":
             print("프로그램을 종료합니다. 안녕히 가세요!")
             break
