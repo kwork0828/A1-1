@@ -33,6 +33,47 @@ prompts = [
         "favorite": False,
     },
 ]
+def print_line():
+    print("-" * 40)
+
+
+def print_prompt_line(no, prompt):
+    mark = " ⭐" if prompt["favorite"] else ""
+    print(f"{no}. [{prompt['category']}] {prompt['title']}{mark}")
+
+
+def input_nonempty(label):
+    while True:
+        value = input(label).strip()
+        if value:
+            return value
+        print("입력값이 비어 있습니다. 다시 입력해 주세요.")
+
+
+def choose_category():
+    print("\n카테고리 선택:")
+    for i, name in enumerate(CATEGORIES, 1):
+        print(f"{i}) {name}")
+    print("0) 직접 입력")
+    choice = input("선택: ").strip()
+    if choice == "0":
+        return input_nonempty("카테고리 직접 입력: ")
+    if choice.isdigit() and 1 <= int(choice) <= len(CATEGORIES):
+        return CATEGORIES[int(choice) - 1]
+    print("잘못된 선택입니다. '기타'로 지정합니다.")
+    return "기타"
+
+
+def select_index(label="번호 입력: "):
+    value = input(label).strip()
+    if not value.isdigit():
+        print("숫자를 입력해 주세요.")
+        return -1
+    number = int(value)
+    if number < 1 or number > len(prompts):
+        print("존재하지 않는 번호입니다.")
+        return -1
+    return number - 1
 
 def show_menu():
     print("\n=== 나만의 프롬프트 관리 ===")
@@ -45,13 +86,28 @@ def show_menu():
     print("7. 즐겨찾기 목록")
     print("0. 종료")
 
+def add_prompt():
+    print("\n=== 프롬프트 추가 ===")
+    title = input_nonempty("제목: ")
+    content = input_nonempty("내용: ")
+    category = choose_category()
+    prompts.append({
+        "title": title,
+        "content": content,
+        "category": category,
+        "favorite": False,
+    })
+    print("\n프롬프트가 추가되었습니다!")
+
 
 def main():
     while True:
         show_menu()
         choice = input("선택: ").strip()
 
-        if choice == "0":
+        if choice == "1":
+            add_prompt()
+        elif choice == "0":
             print("프로그램을 종료합니다. 안녕히 가세요!")
             break
         else:
