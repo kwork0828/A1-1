@@ -33,6 +33,8 @@ prompts = [
         "favorite": False,
     },
 ]
+
+
 def print_line():
     print("-" * 40)
 
@@ -75,6 +77,7 @@ def select_index(label="번호 입력: "):
         return -1
     return number - 1
 
+
 def show_menu():
     print("\n=== 나만의 프롬프트 관리 ===")
     print("1. 프롬프트 추가")
@@ -85,6 +88,7 @@ def show_menu():
     print("6. 즐겨찾기 관리")
     print("7. 즐겨찾기 목록")
     print("0. 종료")
+
 
 def add_prompt():
     print("\n=== 프롬프트 추가 ===")
@@ -98,6 +102,7 @@ def add_prompt():
         "favorite": False,
     })
     print("\n프롬프트가 추가되었습니다!")
+
 
 def show_list():
     print("\n=== 프롬프트 목록 ===")
@@ -122,6 +127,58 @@ def show_by_category():
     print(f"\n총 {len(found)}개")
 
 
+def search_prompt():
+    print("\n=== 프롬프트 검색 ===")
+    keyword = input_nonempty("검색어: ").lower()
+    found = [p for p in prompts
+             if keyword in p["title"].lower() or keyword in p["content"].lower()]
+    if not found:
+        print(f"\n'{keyword}' 검색 결과가 없습니다.")
+        return
+    for i, prompt in enumerate(found, 1):
+        print_prompt_line(i, prompt)
+    print(f"\n검색 결과 {len(found)}개")
+
+
+def show_detail():
+    show_list()
+    if not prompts:
+        return
+    index = select_index("\n상세히 볼 번호: ")
+    if index == -1:
+        return
+    prompt = prompts[index]
+    print_line()
+    print(f"제목    : {prompt['title']}")
+    print(f"카테고리: {prompt['category']}")
+    print(f"즐겨찾기: {'예' if prompt['favorite'] else '아니오'}")
+    print(f"내용    : {prompt['content']}")
+    print_line()
+
+
+def toggle_favorite():
+    show_list()
+    if not prompts:
+        return
+    index = select_index("\n즐겨찾기 변경할 번호: ")
+    if index == -1:
+        return
+    prompts[index]["favorite"] = not prompts[index]["favorite"]
+    state = "등록" if prompts[index]["favorite"] else "해제"
+    print(f"\n'{prompts[index]['title']}' 즐겨찾기를 {state}했습니다.")
+
+
+def show_favorites():
+    print("\n=== 즐겨찾기 목록 ===")
+    found = [p for p in prompts if p["favorite"]]
+    if not found:
+        print("즐겨찾기한 프롬프트가 없습니다.")
+        return
+    for i, prompt in enumerate(found, 1):
+        print_prompt_line(i, prompt)
+    print(f"\n총 {len(found)}개")
+
+
 def main():
     while True:
         show_menu()
@@ -133,6 +190,14 @@ def main():
             show_list()
         elif choice == "3":
             show_by_category()
+        elif choice == "4":
+            search_prompt()
+        elif choice == "5":
+            show_detail()
+        elif choice == "6":
+            toggle_favorite()
+        elif choice == "7":
+            show_favorites()
         elif choice == "0":
             print("프로그램을 종료합니다. 안녕히 가세요!")
             break
@@ -142,6 +207,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
