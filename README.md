@@ -10,3 +10,4 @@ git clone https://github.com/kwork0828/A1-1.git
 cd A1-1
 python prompt_manager.py
 
+<!-- GitHub 웹에서 직접 수정하여 pull 실습 -->
